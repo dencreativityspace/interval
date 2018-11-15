@@ -85,6 +85,4 @@ function Interval({callback, repetitionDelay = 1000, start = true} = {}) {
     this.getStatus = function () {
         return _status;
     };
-    
-    //return this;
 }
