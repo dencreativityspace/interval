@@ -11,13 +11,11 @@ function Interval({callback, repetitionDelay = 1000, start = true} = {}) {
     }
     
     if (!isFunction(callback)) {
-        console.error("Wrong function parameter.", callback);
-        return;
+        throw new Error('Callback must be a function.');
     }
     
     if (repetitionDelay !== parseInt(repetitionDelay, 10)) {
-        console.error("Wrong function parameter.", repetitionDelay);
-        return;
+        throw new Error('Wrong repetition delay.');
     }
     
     _last = {
@@ -32,8 +30,7 @@ function Interval({callback, repetitionDelay = 1000, start = true} = {}) {
     this.startInterval = function ({callback = null, repetitionDelay = null} = {}) {
         if (repetitionDelay !== null) {
             if (repetitionDelay !== parseInt(repetitionDelay, 10)) {
-                console.error("Wrong repetition delay parameter.");
-                return;
+                throw new Error('Wrong repetition delay.');
             }
                 
             _last.repetitionDelay = repetitionDelay;
@@ -41,8 +38,7 @@ function Interval({callback, repetitionDelay = 1000, start = true} = {}) {
         
         if (callback !== null) {
             if (!isFunction(callback)) {
-                console.error("Wrong function parameter.");
-                return;
+              	throw new Error('Callback must be a function.');
             }
             
             _last.callback = callback;
@@ -64,8 +60,7 @@ function Interval({callback, repetitionDelay = 1000, start = true} = {}) {
         
         if (callback) {
             if (!isFunction(callback)) {
-                console.error("Wrong callback.");
-                return;
+                throw new Error('Callback must be a function.');
             }
             
             callback();
