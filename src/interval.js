@@ -90,10 +90,6 @@ function Interval({callback = () => {}, ms = 1000, start = true} = {}) {
         ms: checkTime(ms)
     };
 
-    if (start) {
-        that.startInterval(last);
-    }
-
     /**
      * Starts the interval if paused.
      *
@@ -180,4 +176,8 @@ function Interval({callback = () => {}, ms = 1000, start = true} = {}) {
     that.getTime = () => {
         return ms;
     };
+
+    if (start) {
+        that.startInterval(last);
+    }
 }
