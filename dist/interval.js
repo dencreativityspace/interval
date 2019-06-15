@@ -12,7 +12,7 @@
  * @throws Will throw an error if `callback` is not a function.
  * @throws Will throw an error if `ms` is less or equal than 0.
  *
- * @version 1.2.0
+ * @version 1.2.1
  *
  * @author Gennaro Landolfi <gennarolandolfi@codedwork.it>
  */
@@ -27,11 +27,57 @@ function Interval() {
       _ref$start = _ref.start,
       start = _ref$start === void 0 ? true : _ref$start;
 
+  var that = this;
+  /**
+   * Checks if a callback is a valid function.
+   *
+   * @param {function} callback Callback to be checked.
+   *
+   * @returns {boolean}
+   *
+   * @throws Will throw an error if the given callback isn't a valid function.
+   */
+
+  function isFunction(callback) {
+    if (typeof callback === 'function') {
+      return true;
+    }
+
+    throw new Error('Callback must be a function.');
+  }
+  /**
+   * Checks a given value is a valid time value.
+   *
+   * @param {number|string} ms Time in milliseconds to be checked.
+   *
+   * @returns {number}
+   *
+   * @throws Will throw an error if the given time is too low.
+   */
+
+
+  function checkTime(ms) {
+    if (ms == null) {
+      ms = 0;
+    }
+
+    if (typeof ms === 'string') {
+      ms = parseInt(ms, 10);
+    }
+
+    if (ms && ms <= 0) {
+      throw new Error('Wrong repetition delay.');
+    }
+
+    return ms;
+  }
   /**
    * Native interval ID.
    *
    * @type {number|null}
    */
+
+
   var interval = null;
   /**
    * Current status of the execution. If true, the interval is in repetition.
@@ -50,40 +96,11 @@ function Interval() {
     callback: null,
     ms: null
   };
-
-  function isFunction(callback) {
-    if (typeof callback === 'function') {
-      return true;
-    }
-
-    throw new Error('Callback must be a function.');
-  }
-
-  function checkTime(ms) {
-    if (ms == null) {
-      ms = 0;
-    }
-
-    if (typeof ms === 'string') {
-      ms = parseInt(ms, 10);
-    }
-
-    if (ms && ms <= 0) {
-      throw new Error('Wrong repetition delay.');
-    }
-
-    return ms;
-  }
-
   isFunction(callback);
   last = {
     callback: callback,
     ms: checkTime(ms)
   };
-
-  if (start) {
-    this.startInterval(last);
-  }
   /**
    * Starts the interval if paused.
    *
@@ -93,8 +110,7 @@ function Interval() {
    * @returns {Interval}
    */
 
-
-  this.startInterval = function () {
+  that.startInterval = function () {
     var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         _ref2$callback = _ref2.callback,
         callback = _ref2$callback === void 0 ? function () {} : _ref2$callback,
@@ -123,7 +139,7 @@ function Interval() {
    */
 
 
-  this.stopInterval = function () {
+  that.stopInterval = function () {
     var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         _ref3$callback = _ref3.callback,
         callback = _ref3$callback === void 0 ? function () {} : _ref3$callback;
@@ -148,7 +164,7 @@ function Interval() {
    */
 
 
-  this.deleteInterval = function () {
+  that.deleteInterval = function () {
     var _ref4 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         _ref4$callback = _ref4.callback,
         callback = _ref4$callback === void 0 ? function () {} : _ref4$callback;
@@ -166,7 +182,7 @@ function Interval() {
    */
 
 
-  this.getStatus = function () {
+  that.getStatus = function () {
     return status;
   };
   /**
@@ -176,7 +192,7 @@ function Interval() {
    */
 
 
-  this.setTime = function () {
+  that.setTime = function () {
     var mewMs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1000;
     last.ms = ms;
     ms = checkTime(mewMs);
@@ -188,7 +204,11 @@ function Interval() {
    */
 
 
-  this.getTime = function () {
+  that.getTime = function () {
     return ms;
   };
+
+  if (start) {
+    that.startInterval(last);
+  }
 }
