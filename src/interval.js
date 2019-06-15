@@ -10,11 +10,55 @@
  * @throws Will throw an error if `callback` is not a function.
  * @throws Will throw an error if `ms` is less or equal than 0.
  *
- * @version 1.2.0
+ * @version 1.2.1
  *
  * @author Gennaro Landolfi <gennarolandolfi@codedwork.it>
  */
 function Interval({callback = () => {}, ms = 1000, start = true} = {}) {
+    const that = this;
+
+    /**
+     * Checks if a callback is a valid function.
+     *
+     * @param {function} callback Callback to be checked.
+     *
+     * @returns {boolean}
+     *
+     * @throws Will throw an error if the given callback isn't a valid function.
+     */
+    function isFunction(callback) {
+        if (typeof callback === 'function') {
+            return true;
+        }
+
+        throw new Error('Callback must be a function.');
+    }
+
+    /**
+     * Checks a given value is a valid time value.
+     *
+     * @param {number|string} ms Time in milliseconds to be checked.
+     *
+     * @returns {number}
+     *
+     * @throws Will throw an error if the given time is too low.
+     */
+    function checkTime(ms) {
+        if (ms == null) {
+            ms = 0;
+        }
+
+        if (typeof ms === 'string') {
+            ms = parseInt(ms, 10);
+        }
+
+        if (ms && ms <= 0) {
+            throw new Error('Wrong repetition delay.');
+        }
+
+        return ms;
+    }
+
     /**
      * Native interval ID.
      *
@@ -39,30 +83,6 @@ function Interval({callback = () => {}, ms = 1000, start = true} = {}) {
         ms: null
     };
 
-    function isFunction(callback) {
-        if (typeof callback === 'function') {
-            return true;
-        }
-
-        throw new Error('Callback must be a function.');
-    }
-
-    function checkTime(ms) {
-        if (ms == null) {
-            ms = 0;
-        }
-
-        if (typeof ms === 'string') {
-            ms = parseInt(ms, 10);
-        }
-
-        if (ms && ms <= 0) {
-            throw new Error('Wrong repetition delay.');
-        }
-
-        return ms;
-    }
-
     isFunction(callback);
 
     last = {
@@ -71,7 +91,7 @@ function Interval({callback = () => {}, ms = 1000, start = true} = {}) {
     };
 
     if (start) {
-        this.startInterval(last);
+        that.startInterval(last);
     }
 
     /**
@@ -82,7 +102,7 @@ function Interval({callback = () => {}, ms = 1000, start = true} = {}) {
      *
      * @returns {Interval}
      */
-    this.startInterval = ({callback = () => {}, ms = 1000} = {}) => {
+    that.startInterval = ({callback = () => {}, ms = 1000} = {}) => {
         last.ms = checkTime(ms);
 
         if (isFunction(callback)) {
@@ -104,7 +124,7 @@ function Interval({callback = () => {}, ms = 1000, start = true} = {}) {
      *
      * @returns {Interval}
      */
-    this.stopInterval = ({callback = () => {}} = {}) => {
+    that.stopInterval = ({callback = () => {}} = {}) => {
         if (status && interval !== null) {
             clearInterval(interval);
             status = false;
@@ -124,7 +144,7 @@ function Interval({callback = () => {}, ms = 1000, start = true} = {}) {
      *
      * @returns {Interval}
      */
-    this.deleteInterval = ({callback = () => {}} = {}) => {
+    that.deleteInterval = ({callback = () => {}} = {}) => {
         this.stopInterval({
             callback: callback
         });
@@ -137,7 +157,7 @@ function Interval({callback = () => {}, ms = 1000, start = true} = {}) {
      *
      * @returns {boolean}
      */
-    this.getStatus = function () {
+    that.getStatus = function () {
         return status;
     };
 
@@ -146,7 +166,7 @@ function Interval({callback = () => {}, ms = 1000, start = true} = {}) {
      *
      * @param {number} [mewMs=1000] Time in milliseconds.
      */
-    this.setTime = (mewMs = 1000) => {
+    that.setTime = (mewMs = 1000) => {
         last.ms = ms;
 
         ms = checkTime(mewMs);
@@ -157,7 +177,7 @@ function Interval({callback = () => {}, ms = 1000, start = true} = {}) {
      *
      * @returns {number}
      */
-    this.getTime = () => {
+    that.getTime = () => {
         return ms;
     };
 }
