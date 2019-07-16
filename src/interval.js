@@ -62,7 +62,7 @@ function Interval({callback = () => {}, ms = 1000, start = true} = {}) {
     /**
      * Native interval ID.
      *
-     * @type {number|null}
+     * @type {null|number}
      */
     let interval = null;
 
@@ -105,7 +105,7 @@ function Interval({callback = () => {}, ms = 1000, start = true} = {}) {
             last.callback = callback;
         }
 
-        if (!status || interval === null) {
+        if (!status || interval == null) {
             interval = setInterval(last.callback, last.ms);
             status = true;
         }
@@ -121,7 +121,7 @@ function Interval({callback = () => {}, ms = 1000, start = true} = {}) {
      * @returns {Interval}
      */
     that.stopInterval = ({callback = () => {}} = {}) => {
-        if (status && interval !== null) {
+        if (status && interval != null) {
             clearInterval(interval);
             status = false;
         }

@@ -74,7 +74,7 @@ function Interval() {
   /**
    * Native interval ID.
    *
-   * @type {number|null}
+   * @type {null|number}
    */
 
 
@@ -123,7 +123,7 @@ function Interval() {
       last.callback = callback;
     }
 
-    if (!status || interval === null) {
+    if (!status || interval == null) {
       interval = setInterval(last.callback, last.ms);
       status = true;
     }
@@ -144,7 +144,7 @@ function Interval() {
         _ref3$callback = _ref3.callback,
         callback = _ref3$callback === void 0 ? function () {} : _ref3$callback;
 
-    if (status && interval !== null) {
+    if (status && interval != null) {
       clearInterval(interval);
       status = false;
     }
